@@ -139,9 +139,9 @@ class ScreenManager:
         GPIO.setup(list(self.pins_to_buttons.keys()),
                    GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-        for each_pin_num in self.pins_to_buttons.keys():
-            GPIO.add_event_detect(each_pin_num, GPIO.FALLING,
-                                  self.handle_button_press, bouncetime=250)
+        #for each_pin_num in self.pins_to_buttons.keys():
+        #    GPIO.add_event_detect(each_pin_num, GPIO.FALLING,
+        #                          self.handle_button_press, bouncetime=250)
 
     def refresh_in_background(self) -> None:
         """Periodically displays a new image."""
