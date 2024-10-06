@@ -11,7 +11,7 @@ ExecStart= \
     --vfs-cache-mode writes \
     --vfs-cache-max-size 100M \
     --umask 022 \
-    GooglePhotos:shared-album/{{SHARED_ALBUM_NAME}} {{IMAGE_SRC_DIR}}
+    Box:/{{SHARED_ALBUM_NAME}} {{IMAGE_SRC_DIR}}
 ExecStop=/bin/fusermount -u {{IMAGE_SRC_DIR}}
 
 [Install]
