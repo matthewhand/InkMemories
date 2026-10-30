@@ -2,6 +2,6 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
     - repo: https://github.com/PyCQA/pylint
-      rev: v2.17.7
+      rev: v4.0.9
       hooks:
           - id: pylint

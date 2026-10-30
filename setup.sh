@@ -1,6 +1,13 @@
-#!/bin/sh
+#!/usr/bin/bash
+set -euo pipefail
 
-if [ "$EUID" ] && [ "$EUID" -ne 0 ]; then
+# Pillow 13 fixes critical image-decoder vulnerabilities and needs Python 3.11+.
+if ! python3 -c "import sys; sys.exit(sys.version_info < (3, 11))"; then
+    echo "Python 3.11 or newer is required before installation." >&2
+    exit 1
+fi
+
+if [ "$EUID" -ne 0 ]; then
     echo "This script must be run with sudo."
     exit 1
 fi
@@ -12,6 +19,7 @@ echo "Configuring RClone."
 
 # Installing RClone.
 sudo -v ; curl https://rclone.org/install.sh | sudo bash
+sudo apt install -y fuse3
 
 # Setting up RClone's connection to Google Photos.
 rclone config
@@ -21,14 +29,9 @@ rclone config
 #===========================================================================
 echo "Installing dependencies."
 
-sudo apt install python3-venv
+sudo apt install -y python3-venv
 python3 -m venv InkMemories
-source InkMemories/bin/activate
-pip list
-pip install -r displayer_service/requirements.txt
-
-echo sudo apt-get -y install pre-commit
-pre-commit install
+./InkMemories/bin/python -m pip install -r displayer_service/requirements.txt
 
 # Inky throws an error, 'libopenblas.so.0: cannot open shared object file: No such file or directory'.
 # Installing this fixes it.

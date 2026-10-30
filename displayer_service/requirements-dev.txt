@@ -1,0 +1,6 @@
+# Optional developer/test tools; not installed by setup.sh on Raspberry Pi.
+pytest==9.2.0
+pylint==4.0.9
+pre-commit==4.7.0
+virtualenv==21.15.1
+filelock==3.24.2

@@ -37,8 +37,24 @@ class TestImageRetriever:
 
         assert actual_images == expected_images
 
-    def test_get_random_image():
-        """TODO"""
+    def test_get_random_image(self, image_retriever):
+        # Exercise real image decoding without GPIO / e-ink hardware.
+        img = image_retriever.get_random_image()
+        try:
+            assert img.size[0] > 0 and img.size[1] > 0
+            img.load()
+        finally:
+            image_retriever.clean_up_image(img)
+            img.close()
 
-    def test_get_random_images():
-        """TODO"""
+    def test_get_random_images(self, image_retriever):
+        images = image_retriever.get_random_images(2)
+        try:
+            assert len(images) == 2
+            for img in images:
+                assert img.size[0] > 0 and img.size[1] > 0
+                img.load()
+        finally:
+            for img in images:
+                image_retriever.clean_up_image(img)
+                img.close()
