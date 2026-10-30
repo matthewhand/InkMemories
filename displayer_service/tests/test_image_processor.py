@@ -25,3 +25,21 @@ class TestImageProcessorDetermineCropCoordinates(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_pillow_exif_date_overlay():
+    # Real Pillow >=13 image decoding and EXIF overlay; no Pi hardware needed.
+    from io import BytesIO
+    from PIL import Image
+    from common.image_processor import burn_date_into_image
+
+    photo = Image.new("RGB", (400, 240), "white")
+    exif = Image.Exif()
+    exif[306] = "2026:10:31 08:15:00"
+    buffer = BytesIO()
+    photo.save(buffer, format="JPEG", exif=exif)
+    buffer.seek(0)
+    with Image.open(buffer) as decoded:
+        assert decoded.getexif().get(306) == "2026:10:31 08:15:00"
+        overlaid = burn_date_into_image(decoded)
+        assert overlaid.size == (400, 240)

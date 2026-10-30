@@ -48,7 +48,7 @@ InkMemories will automatically display a new image to the screen every hour.
 - To configure display parameters, such as the time taken between automatic image refreshes, modify `displayer_service/display_config.json`, then reload the displayer service with `sudo systemctl restart ink-memories-displayer` for the config changes to be applied.
 
 ## Setup Instructions
-These instructions assume that you have set up Raspbian OS.
+These instructions assume Raspberry Pi OS with **Python 3.11 or newer**. Pillow 13 fixes critical image-processing vulnerabilities but does not support earlier Python releases. Check with `python3 --version` before installing; upgrade the OS/Python first if necessary. A Pi hardware compatibility test is still required.
 
 0. Using `sudo raspi-config`, enable I2C and SPI. This is necessary for getting the e-ink display to work.
 1. Run `sudo apt update` to ensure packages fetched in a later step are up to date.
@@ -98,8 +98,8 @@ These instructions assume that you have set up Raspbian OS.
     - After the services are running, an image should be displayed after a minute or two.
 
 5. Edit `displayer_service/display_config.json`, setting `image_source_dir` to be the chosen image source path in the previous step. In my case, `/home/pi/Pictures/InkMemories`.
-6. Run unit tests: `pytest` from the `displayer_service` directory.
-7. (Optional) Run the image displayer direcly with `python app.py` in the `displayer_service` directory.
+6. For development, install the optional tools from `displayer_service/requirements-dev.txt` in a separate development environment. Run tests with `python -m pytest` from the `displayer_service` directory. The Pi installer uses only runtime dependencies.
+7. (Optional) Run the image displayer with `../InkMemories/bin/python app.py` in the `displayer_service` directory. The systemd service also uses this venv interpreter rather than the system Python.
 
 
 ## How it works
