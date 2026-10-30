@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/bash
 
 if [ "$EUID" ] && [ "$EUID" -ne 0 ]; then
     echo "This script must be run with sudo."
@@ -12,6 +12,7 @@ echo "Configuring RClone."
 
 # Installing RClone.
 sudo -v ; curl https://rclone.org/install.sh | sudo bash
+sudo apt install -y fuse3 python-pip
 
 # Setting up RClone's connection to Google Photos.
 rclone config
@@ -21,7 +22,7 @@ rclone config
 #===========================================================================
 echo "Installing dependencies."
 
-sudo apt install python3-venv
+sudo apt install -y python3-venv
 python3 -m venv InkMemories
 source InkMemories/bin/activate
 pip list
